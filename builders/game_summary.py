@@ -31,16 +31,22 @@ from helpers.formatters import (
 from helpers.timelib import to_msc_datetime
 
 
-game_type: int
+def game_summary_builder(summary: Summary, watch: bool = False) -> str:
 
-
-def game_summary_builder(summary: Summary) -> str:
+    if summary.game_state in {"LIVE", "CRIT"}:
+        if watch:
+            watch_command = _(format_command("unwatch", summary.game_id))
+        else:
+            watch_command = _(format_command("watch", summary.game_id))
+    else:
+        watch_command = ""
 
     game_summary = [
         _([
-            format_datetime(summary.date, date_only=True),
-            safe_game_state(summary.game_state),
-        ], pre="📅", fmt_func=code, new_line=2),
+            _(format_datetime(summary.date, date_only=True, new_line=0), fmt_func=code),
+            watch_command
+        ], pre="📅", new_line=1),
+        _(safe_game_state(summary.game_state), fmt_func=code, new_line=2),
         _(
             to_msc_datetime(summary.start_time, time_only=True),
             pre="[", post="]",fmt_func=bold
@@ -249,6 +255,10 @@ def _summary_penalties_builder(penalties: List[Penalty]) -> str:
 
 
 def _summary_threestars_builder(threestars: List[Star]) -> str:
+
+    if not threestars:
+        return ""
+
     stars = [
         _("Три звезды:", fmt_func=bold, new_line=1)
     ]

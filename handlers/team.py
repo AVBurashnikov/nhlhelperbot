@@ -9,9 +9,9 @@ async def team_command_handler(
         update: Update,
         context: CallbackContext,
         team_name: str,
-        roster: bool = False
+        arg: str = ""
 ) -> None:
-    if roster:
+    if arg == "roster":
         await team_roster_handler(update, context, team_name)
     else:
         await team_schedule_handler(update, context, team_name)

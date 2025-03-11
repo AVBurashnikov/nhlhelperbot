@@ -19,4 +19,5 @@ class PlayerLanding(Player):
                                                     alias="featuredStats",
                                                     description="Функциональная статистика игрока")
     last_5_games: Optional[List[Stats]] = Field(None, alias="last5Games")
+    season_totals: Optional[List[Stats]] = Field(None, alias="seasonTotals")
     awards: Optional[List[Award]] = None

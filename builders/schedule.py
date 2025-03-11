@@ -43,8 +43,9 @@ def schedule_builder(data: Schedule) -> str:
             schedule.append(
                 _([
                     start_time if show_time else "",
-                    format_match(game.away_team, game.home_team, game.game_id)
-                ], sep="", new_line=1)
+                    format_match(game.away_team, game.home_team, game.game_id),
+                    format_command("g", game.game_id)
+                ], new_line=1)
             )
             cur_time = start_time
 

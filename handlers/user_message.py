@@ -1,70 +1,78 @@
+from typing import List
+import logging
+
 from telegram import Update
 from telegram.ext import CallbackContext
 
-from handlers.follow import follow_handler, unfollow_handler
-from handlers.game_summary import game_summary_handler
-from handlers.player_landing import player_command_handler
-from handlers.standings import standings_handler
-from handlers.team import team_command_handler
-from message import send_message
-import logging
+from handlers.commands import COMMANDS
 from helpers.constants import TEAMS_ABBR
+from message import send_message
+from handlers.team import team_command_handler
+
 
 logger = logging.getLogger("nhlapi.bot")
 
 
 async def message_handler(update: Update, context: CallbackContext) -> None:
+    """Обработка всех входящих сообщений"""
     message = update.message.text
     logger.info(f"Received message: {message}")
 
-    # Проверка на команду
     if not message.startswith("/"):
         await handle_unknown_command(update, message)
         return
 
-    # Разделение команды на части
-    command, *args = message.strip("/").split("_")
+    await process_command(update, context, message)
 
-    # Обработка команды "player"
-    if command == "pl":
-        if not args:
-            logger.warning("Player ID is missing.")
-            await send_message(update, "Player ID is missing.")
-            return
-        logger.info(f"Fetching player profile for ID: {args[0]}")
-        await player_command_handler(update, context, args[0])
-        return
 
-    if command == "g":
-        if not args:
-            logger.warning("Game ID is missing.")
-            await send_message(update, "Game ID is missing.")
-            return
-        logger.info(f"Fetching game summary for ID: {args[0]}")
-        await game_summary_handler(update, context, args[0])
-        return
+async def process_command(update: Update, context: CallbackContext, message: str) -> None:
+    """Обработка команды после проверки формата"""
+    command_parts = message.strip("/").split("_")
+    command = command_parts[0].lower()
+    args = command_parts[1:]
 
-    if command == "standings":
-        if not args:
-            logger.info("Fetching position of teams in the league.")
-            await standings_handler(update, context)
-            return
-        logger.info(f"Fetching position of teams depending on {args[0]}.")
-        await standings_handler(update, context, args[0])
-        return
-
-    # Обработка команд, связанных с командами
-    if command.lower() not in TEAMS_ABBR:
-        logger.warning(f"Unknown command: {message}")
-        await handle_unknown_command(update, message)
-    elif args:
-        logger.info(f"Fetching team roster for: {command.upper()}")
-        await team_command_handler(update, context, command, args[0])
+    # Сначала проверяем специальные команды
+    if command in COMMANDS:
+        await handle_standard_command(update, context, command, args)
+    elif command in TEAMS_ABBR:
+        await handle_team_command(update, context, command, args)
     else:
-        logger.info(f"Fetching team schedule for: {command.upper()}")
-        await team_command_handler(update, context, command)
+        await handle_unknown_command(update, message)
+
+
+async def handle_standard_command(update: Update, context: CallbackContext, command: str, args: List[str]) -> None:
+    """Обработка стандартных команд из словаря COMMANDS"""
+    cmd_info = COMMANDS[command]
+    required_args = cmd_info.get("min_args", 0)
+
+    if len(args) < required_args:
+        logger.warning(f"Missing arguments for command: {command}")
+        await send_message(update,
+                           f"Missing required arguments for command. Usage: /{command}{'_...' if required_args else ''}")
+        return
+
+    try:
+        await cmd_info["handler"](update, context, *args)
+    except Exception as e:
+        logger.error(f"Error processing command /{command}: {str(e)}")
+        await send_message(update, "An error occurred while processing your request")
+
+
+async def handle_team_command(update: Update, context: CallbackContext, team_abbr: str, args: List[str]) -> None:
+    """Обработка команд, связанных с командами NHL"""
+    try:
+        if args:
+            logger.info(f"Fetching roster for team: {team_abbr.upper()}")
+            await team_command_handler(update, context, team_abbr, args[0])
+        else:
+            logger.info(f"Fetching schedule for team: {team_abbr.upper()}")
+            await team_command_handler(update, context, team_abbr)
+    except Exception as e:
+        logger.error(f"Error processing team command /{team_abbr}: {str(e)}")
+        await send_message(update, "Failed to retrieve team information")
 
 
 async def handle_unknown_command(update: Update, message: str) -> None:
-    """Обработка неизвестной команды."""
-    await send_message(update, "Я не знаю такой команды.")
+    """Обработка неизвестных команд"""
+    logger.warning(f"Unknown command received: {message}")
+    await send_message(update, "Unknown command. Use /help to see available commands")

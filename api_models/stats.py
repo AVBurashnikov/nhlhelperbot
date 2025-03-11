@@ -1,5 +1,7 @@
 from typing import Optional, List
 from pydantic import BaseModel, Field
+
+from api_models.name import Name
 from api_models.player import Player
 
 
@@ -29,5 +31,8 @@ class Stats(BaseModel):
     opponent_abbrev: Optional[str] = Field("", alias="opponentAbbrev")
     shots_against: Optional[int] = Field(0, alias="shotsAgainst")
     team_abbrev: Optional[str] = Field("", alias="teamAbbrev")
+    team_name: Optional[Name] = Field(None, alias="teamName")
+    season: Optional[int] = 0
+    league_abbrev: Optional[str] = Field("", alias="leagueAbbrev")
 
 

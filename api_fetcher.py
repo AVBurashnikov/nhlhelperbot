@@ -33,6 +33,7 @@ async def handle_api_response(
         builder_func: callable,
         query_key: str,
         ttl: int = 3600,
+        watch: bool = False
 ) -> None:
 
     message = await send_message(update, "Загружаю данные...")

@@ -15,12 +15,12 @@ def to_msc_datetime(dt: str, date_only: bool = False, time_only: bool = False):
     moscow_datetime = utc_t.astimezone(moscow_tz)
 
     if date_only:
-        return moscow_datetime.strftime("%d/%m/%Y")
+        return moscow_datetime.strftime("%d.%m.%Y")
 
     if time_only:
         return moscow_datetime.strftime("%H:%M")
 
-    return moscow_datetime.strftime("%d/%m/%Y %H:%M")
+    return moscow_datetime.strftime("%d.%m.%Y %H:%M")
 
 
 def tomorrow():

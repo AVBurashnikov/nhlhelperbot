@@ -5,6 +5,7 @@ import argparse
 from telegram.ext import Application, CommandHandler, MessageHandler
 from dotenv import load_dotenv
 
+from handlers.help import help_handler
 from handlers.player_stats import skater_stats_handler, goalie_stats_handler
 from handlers.team_roster import roster
 from handlers.schedule import schedule_handler
@@ -12,6 +13,7 @@ from handlers.score import score_handler
 from handlers.standings import standings_handler
 from handlers.start import start_handler
 from handlers.team_abbrev import team_abbrev_handler
+from handlers.trophy import trophy_handler
 from handlers.user_message import message_handler
 from helpers.logger import setup_logger
 
@@ -75,6 +77,10 @@ def main() -> None:
         # Обработчик команды /start
         application.add_handler(CommandHandler("start", start_handler))
         # TODO: сделать регистрацию новых пользователей в базе данных
+
+        # Обработчик команды /help
+        application.add_handler(CommandHandler("help", help_handler))
+
         # Обработчик команды /schedule (расписание матчей на два дня вперед)
         application.add_handler(CommandHandler("schedule", schedule_handler))
 
@@ -95,6 +101,9 @@ def main() -> None:
 
         # Обработчик команды /goalie_stats - статистика по вратарям по проценту отраженных бросков ТОП-10
         application.add_handler(CommandHandler("goalie_stats", goalie_stats_handler))
+
+        # Обработчик команды /trophy - статистика по вратарям по проценту отраженных бросков ТОП-10
+        application.add_handler(CommandHandler("trophy", trophy_handler))
 
         # Обработчик команды /standings
         # application.add_handler(CommandHandler("standings", standings_handler))

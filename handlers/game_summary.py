@@ -6,7 +6,7 @@ from builders.game_summary import game_summary_builder
 from urls import Urls
 
 
-async def game_summary_handler(update: Update, context: CallbackContext, game_id: int) -> None:
+async def game_summary_handler(update: Update, context: CallbackContext, game_id: int, watch: bool = False) -> None:
     await handle_api_response(
         update,
         context,
@@ -15,4 +15,5 @@ async def game_summary_handler(update: Update, context: CallbackContext, game_id
         game_summary_builder,
         f"game_summary_{game_id}",
         300,
+        watch
     )
