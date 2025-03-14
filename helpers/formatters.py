@@ -173,9 +173,9 @@ def format_assist(assist: Assist) -> str:
 def format_shootout(shootout: Shootout) -> str:
     return _([
         _("✅" if shootout.result == "goal" else "❌"),
-        _(shootout.first_name),
-        _(shootout.last_name),
-        format_team_abbrev(shootout.team_abbrev),
+        _(shootout.first_name.default),
+        _(shootout.last_name.default),
+        format_team_abbrev(shootout.team_abbrev.default),
         format_command("pl", shootout.player_id),
     ], new_line=1)
 

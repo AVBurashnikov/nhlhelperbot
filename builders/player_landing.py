@@ -186,7 +186,7 @@ def _build_player_awards(awards: List[Award]):
         return f"{season_str[:4]}/{season_str[4:]}"
 
     if awards is None:
-        return _("Наград пока нет.")
+        return _("Наград пока нет.", new_line=2)
 
     award_items = []
     for award in awards:

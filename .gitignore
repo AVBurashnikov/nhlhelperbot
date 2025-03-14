@@ -42,7 +42,7 @@ Thumbs.db
 secrets.py
 
 # Other files
-.zip
+*.zip
 
 
 # Testing and coverage
