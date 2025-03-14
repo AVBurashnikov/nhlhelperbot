@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 
 from handlers.help import help_handler
 from handlers.player_stats import skater_stats_handler, goalie_stats_handler
+from handlers.records import records_handler
 from handlers.team_roster import roster
 from handlers.schedule import schedule_handler
 from handlers.score import score_handler
@@ -102,11 +103,11 @@ def main() -> None:
         # Обработчик команды /goalie_stats - статистика по вратарям по проценту отраженных бросков ТОП-10
         application.add_handler(CommandHandler("goalie_stats", goalie_stats_handler))
 
-        # Обработчик команды /trophy - статистика по вратарям по проценту отраженных бросков ТОП-10
+        # Обработчик команды /trophy - справка по трофеям вручаемым в НХЛ
         application.add_handler(CommandHandler("trophy", trophy_handler))
 
-        # Обработчик команды /standings
-        # application.add_handler(CommandHandler("standings", standings_handler))
+        # Обработчик команды /records - список доступных команд для просмотра рекордов НХЛ
+        application.add_handler(CommandHandler("records", records_handler))
 
         # TODO: добавить команду для просмотра статистики отдельной команды
         # Это место для будущей реализации новой команды

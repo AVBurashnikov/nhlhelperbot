@@ -217,10 +217,10 @@ def format_team_icon(abbrev: str) -> str:
     return f"{TEAMS_ABBR[abbrev]['icon']}"
 
 
-def format_command(*args: Any, description: str = ""):
+def format_command(*args: Any, description: str = "", new_line: int = 0):
     if description:
         return _([
             f"/{'_'.join(map(str, args))}",
             description
-        ], sep=" - ")
-    return f"/{'_'.join(map(str, args))}"
+        ], sep=" - ", new_line=new_line)
+    return _(f"/{'_'.join(map(str, args))}", new_line=new_line)
