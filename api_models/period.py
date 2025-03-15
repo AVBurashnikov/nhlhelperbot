@@ -1,5 +1,6 @@
 from typing import Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
+from pydantic.alias_generators import to_camel
 
 
 class Period(BaseModel):
@@ -16,6 +17,9 @@ class Period(BaseModel):
         Может быть `None`, если тип не указан.
         Использует псевдоним "periodType" для сериализации/десериализации.
     """
-
+    model_config = ConfigDict(
+        alias_generator=to_camel,
+        populate_by_name=True,
+    )
     number: Optional[int] = None
-    period_type: Optional[str] = Field(None, alias="periodType")
+    period_type: Optional[str] = None

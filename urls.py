@@ -11,7 +11,13 @@ class Urls:
         "game_summary": "https://api-web.nhle.com/v1/gamecenter/%s/landing",
         "right_rail": "https://api-web.nhle.com/v1/gamecenter/%s/right-rail",
         "roster": "https://api-web.nhle.com/v1/roster/%s/current",
-        "team_schedule": "https://api-web.nhle.com/v1/scoreboard/%s/now"
+        "team_schedule": "https://api-web.nhle.com/v1/scoreboard/%s/now",
+        # goalie records url
+        "goalie-records": "https://records.nhl.com/site/api/goalie-career-stats?"
+                          "cayenneExp=gameTypeId=2 and gamesPlayed>=100 and "
+                          "franchiseId=null&sort=[{'property':'gamesPlayed','direction':'DESC'},"
+                          "{'property':'lastName','direction':'ASC_CI'}]"
+
     }
 
     @staticmethod

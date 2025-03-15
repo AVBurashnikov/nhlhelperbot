@@ -1,5 +1,7 @@
 from typing import Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
+from pydantic.alias_generators import to_camel
+
 from api_models.name import Name
 
 
@@ -36,11 +38,14 @@ class PenaltyInfo(BaseModel):
         Имя игрока, отбывающего штраф. Может быть `None`, если имя не указано.
         Использует псевдоним "servedBy" для сериализации/десериализации.
     """
-
-    time_in_period: Optional[str] = Field(None, alias="timeInPeriod")
+    model_config = ConfigDict(
+        alias_generator=to_camel,
+        populate_by_name=True,
+    )
+    time_in_period: Optional[str]
     penalty_type: Optional[str] = Field(None, alias="type")
     duration: Optional[int]
     player_name: Optional[Name] = Field(None, alias="committedByPlayer")
-    team_abbrev: Optional[Name] = Field(..., alias="teamAbbrev")
+    team_abbrev: Optional[Name]
     description: Optional[str] = Field(None, alias="descKey")
-    served_by: Optional[Name] = Field(None, alias="servedBy")
+    served_by: Optional[Name]

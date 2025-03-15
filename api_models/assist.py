@@ -1,5 +1,7 @@
 from typing import Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
+from pydantic.alias_generators import to_camel
+
 from api_models.name import Name
 
 
@@ -22,7 +24,11 @@ class Assist(BaseModel):
         Может быть `None`, если количество передач не указано.
         Использует псевдоним "assistsToDate" для сериализации/десериализации.
     """
+    model_config = ConfigDict(
+        alias_generator=to_camel,
+        populate_by_name=True,
+    )
 
-    player_id: Optional[int] = Field(None, alias="playerId")
+    player_id: Optional[int]
     name: Optional[Name] = None
-    assists_to_date: Optional[int] = Field(None, alias="assistsToDate")
+    assists_to_date: Optional[int]
