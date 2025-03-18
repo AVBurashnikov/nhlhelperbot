@@ -16,7 +16,7 @@ logger = logging.getLogger("nhlapi.bot")
 
 
 async def fetch_data(url: str) -> Optional[dict]:
-
+    logger.info(f"Try to get data from {url}.")
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as response:
             if response.status == 200:

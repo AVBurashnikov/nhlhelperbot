@@ -43,7 +43,7 @@ secrets.py
 
 # Other files
 *.zip
-
+test.py
 
 # Testing and coverage
 .coverage

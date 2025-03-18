@@ -6,6 +6,7 @@ from telegram.ext import CallbackContext
 from handlers.game_summary import game_summary_handler
 from handlers.game_watch import game_watch_handler, game_unwatch_handler
 from handlers.player_landing import player_command_handler
+from handlers.records import most_handler
 from handlers.standings import standings_handler
 
 
@@ -41,5 +42,10 @@ COMMANDS: Dict[str, Dict[str, CommandHandler | int | str]] = {
         "handler": game_unwatch_handler,
         "min_args": 1,
         "description": "Прекратить следить за матчем с указанным ID"
+    },
+    "most": {
+        "handler": most_handler,
+        "min_args": 1,
+        "description": "Рекорд НХЛ"
     }
 }

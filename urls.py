@@ -13,9 +13,12 @@ class Urls:
         "roster": "https://api-web.nhle.com/v1/roster/%s/current",
         "team_schedule": "https://api-web.nhle.com/v1/scoreboard/%s/now",
         # goalie records url
-        "goalie-records": "https://records.nhl.com/site/api/goalie-career-stats?"
+        "skaters-records": "https://records.nhl.com/site/api/skater-career-scoring-regular-plus-playoffs?"
+                           "cayenneExp=%s%%20%%3E=%%20700&sort=[{\"property\":\"%s\",\"direction\":\"DESC\"}]",
+
+        "goalies-records": "https://records.nhl.com/site/api/goalie-career-stats?"
                           "cayenneExp=gameTypeId=2 and gamesPlayed>=100 and "
-                          "franchiseId=null&sort=[{'property':'gamesPlayed','direction':'DESC'},"
+                          "franchiseId=null&sort=[\"{property\":\"gamesPlayed\",\"direction\":\"DESC\"}]"
                           "{'property':'lastName','direction':'ASC_CI'}]"
 
     }
