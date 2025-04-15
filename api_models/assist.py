@@ -31,4 +31,4 @@ class Assist(BaseModel):
 
     player_id: Optional[int]
     name: Optional[Name] = None
-    assists_to_date: Optional[int]
+    assists_to_date: Optional[int] = None

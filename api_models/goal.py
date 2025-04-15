@@ -17,7 +17,7 @@ class Goal(BaseModel):
     player_id: Optional[int]
     name: Optional[Name] = None
     team_abbrev: Optional[str | Name]
-    goals_to_date: Optional[int]
+    goals_to_date: Optional[int] = None
     away_score: Optional[int]
     home_score: Optional[int]
     time_in_period: Optional[str]

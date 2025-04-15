@@ -48,4 +48,4 @@ class PenaltyInfo(BaseModel):
     player_name: Optional[Name] = Field(None, alias="committedByPlayer")
     team_abbrev: Optional[Name]
     description: Optional[str] = Field(None, alias="descKey")
-    served_by: Optional[Name]
+    served_by: Optional[Name] = Field(None, alias="servedBy")
